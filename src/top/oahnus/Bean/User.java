@@ -1,5 +1,6 @@
 package top.oahnus.Bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,9 @@ import java.util.Date;
  */
 
 //保存登陆用户信息
-public class User {
+public class User implements Serializable{
+
+    private static final long serialVersionUID = 1L;
     //账号
     private String userID;
     //昵称
@@ -17,11 +20,11 @@ public class User {
     //简介
     private String info;
     //出生日期
-    private Date bornDate;
+    private Date born;
     //性别
     private String sex;
     //所在地
-    private String adress;
+    private String address;
     //头像
     private String figure;
 
@@ -66,11 +69,11 @@ public class User {
     }
 
     public Date getBornDate() {
-        return bornDate;
+        return born;
     }
 
     public void setBornDate(Date bornDate) {
-        this.bornDate = bornDate;
+        this.born = born;
     }
 
     public String getSex() {
@@ -82,10 +85,10 @@ public class User {
     }
 
     public String getAdress() {
-        return adress;
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAdress(String address) {
+        this.address = address;
     }
 }

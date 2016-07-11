@@ -21,12 +21,12 @@ public class LoginFrame extends JFrame {
     private final String REGISTERURL = "http://127.0.0.1:12306/MgChatServer/servlet/register.action";
     private final String FORGETURL = "http://127.0.0.1:12306";
 
-    //用户名输入框
-    private JTextField usernameField;
+    //用户账号输入框
+    private JTextField userIDField;
     //密码输入框
     private JPasswordField passwordField;
     private JLabel backLabel, figureLabel;
-    private JButton closeButton, loginButton;
+    private JButton loginButton;
 
     private JLabel forgetLabel, registerLabel;
 
@@ -37,9 +37,8 @@ public class LoginFrame extends JFrame {
     private User user;
 
     LoginFrame(){
-        closeButton = new JButton();
         backLabel = new JLabel();
-        usernameField = new JTextField("10000");//test账号
+        userIDField = new JTextField("10000");//test账号
         passwordField = new JPasswordField("123456");//test账号
 
         figureLabel = new JLabel();
@@ -60,17 +59,17 @@ public class LoginFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 LoginAuth loginAuth = new LoginAuth();
-                String username = usernameField.getText();
+                String userID = userIDField.getText();
                 String password = passwordField.getText();
 
-                user = loginAuth.verify(username,password);
+                user = loginAuth.verify(userID,password);
 
                 //使用user传送数据可能有局限性？
                 //TODO
                 if(user!=null){
                     System.out.println("success");
-                    MainFrame mainFrame = new MainFrame(user);
 
+                    MainFrame mainFrame = new MainFrame(user);
                     mainFrame.launch();
                     close();
                 }else{
@@ -151,7 +150,7 @@ public class LoginFrame extends JFrame {
         setBounds(420,200,430,330);
 
         backLabel.setBounds(0,0,430,150);
-        usernameField.setBounds(115,160,200,30);
+        userIDField.setBounds(115,160,200,30);
         passwordField.setBounds(115,195,200,30);
         figureLabel.setBounds(10,160,100,100);
         registerLabel.setBounds(320,160,60,30);
@@ -174,7 +173,7 @@ public class LoginFrame extends JFrame {
         figureLabel.setIcon(new ImageIcon(figure));
 
         //设置字体
-        usernameField.setFont(font);
+        userIDField.setFont(font);
         registerLabel.setFont(font);
         forgetLabel.setFont(font);
         loginButton.setFont(font);
@@ -187,7 +186,7 @@ public class LoginFrame extends JFrame {
         getContentPane().add(figureLabel);
         getContentPane().add(registerLabel);
         getContentPane().add(loginButton);
-        getContentPane().add(usernameField);
+        getContentPane().add(userIDField);
         getContentPane().add(passwordField);
         getContentPane().add(forgetLabel);
 
