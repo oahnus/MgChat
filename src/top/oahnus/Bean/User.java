@@ -1,7 +1,9 @@
 package top.oahnus.Bean;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by oahnus on 2016/7/1.
@@ -25,8 +27,28 @@ public class User implements Serializable{
     private String sex;
     //所在地
     private String address;
-    //头像
+    //头像存储路径
     private String figure;
+    //头像
+    private Image figureImage;
+    //好友列表
+    private List<User> friendsList;
+
+    public  Image getFigureImage() {
+        return figureImage;
+    }
+
+    public void  setFigureImage(Image figureImage) {
+        this.figureImage = figureImage;
+    }
+
+    public List<User> getFriendsList() {
+        return friendsList;
+    }
+
+    public void setFriendsList(List<User> friendsList) {
+        this.friendsList = friendsList;
+    }
 
     public String getFigure() {
         return figure;

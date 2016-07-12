@@ -50,20 +50,16 @@ public class MainFrame extends JFrame{
     public static final int WINDOWWIDTH = 280,WINDOWHEIGHT = 640;
 
     public MainFrame(User user){
-        this.user = user;
-
-        close = new JLabel();
-        min = new JLabel();
-        back = new JLabel();
-
-        username = new JLabel();
-        userInfo = new JLabel();
-        userFigure = new JButton();
-
-        friendsPanel = new FriendsPanel();
+        this.user     = user;
+        close         = new JLabel();
+        min           = new JLabel();
+        back          = new JLabel();
+        username      = new JLabel();
+        userInfo      = new JLabel();
+        userFigure    = new JButton();
+        friendsPanel  = new FriendsPanel(user);
         userInfoPanel = new JPanel();
-
-        scrollPane = new JScrollPane(friendsPanel);
+        scrollPane    = new JScrollPane(friendsPanel);
     }
 
     public void launch(){
@@ -82,12 +78,12 @@ public class MainFrame extends JFrame{
 
         //加载图标图片
         try {
-            minIcon = ImageIO.read(new File("resource/sub.png"));
-            closeIcon = ImageIO.read(new File("resource/close.png"));
+            minIcon    = ImageIO.read(new File("resource/sub.png"));
+            closeIcon  = ImageIO.read(new File("resource/close.png"));
             background = ImageIO.read(new File("resource/background.jpg"));
-            icon = ImageIO.read(new File("resource/icon.jpg"));
+            icon       = ImageIO.read(new File("resource/icon.jpg"));
 
-            userIcon = ImageIO.read(new File(user.getFigure()));
+            userIcon   = ImageIO.read(new File(user.getFigure()));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,5 +1,7 @@
 package top.oahnus.Main;
 
+import top.oahnus.Bean.User;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -16,19 +18,22 @@ import java.util.List;
 public class FriendsPanel extends JPanel {
 
     public static final int FIGUREICONWIDTH = 20;
-
-    private List<MemberPanel> friendList = new ArrayList<>();
-
+    private User user                       = null;
+    private Image image                     = null;
+    //默认头像
+    private Image defaultImage              = null;
+    private List<MemberPanel> friendList    = new ArrayList<>();
     //好友下拉列表
-    private JLabel panelTitle;
-
+    private JLabel panelTitle               = null;
     //记录下拉列表点击次数，判断下拉收起
-    private int clickNum = 0;
-
+    private int clickNum                    = 0;
     //图标资源
     private ImageIcon tabUpIcon,tabDownIcon;
-    public FriendsPanel(){
+
+
+    public FriendsPanel(User user){
         super();
+        this.user = user;
         initialize();
     }
 
@@ -38,7 +43,6 @@ public class FriendsPanel extends JPanel {
             getImageFromResource();
         } catch (IOException e) {
 //            e.printStackTrace();
-            //TODO
 System.out.println("无法获取图片资源");
         }
 
@@ -55,36 +59,26 @@ System.out.println("无法获取图片资源");
         panelTitle.setText("我的好友");
 
         this.add(panelTitle);
-//        test();
-        Image image = null;
+
+        //加载默认头像
         try {
-            image = ImageIO.read(new File("resource/icon.jpg"));
-            image = image.getScaledInstance(40,40,Image.SCALE_DEFAULT);
+            defaultImage = ImageIO.read(new File("resource/icon.jpg"));
+            defaultImage = defaultImage.getScaledInstance(40,40,Image.SCALE_DEFAULT);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        MemberPanel memberPanel = new MemberPanel("jack","huuu",image);
-        MemberPanel memberPanel2 = new MemberPanel("tom","huuu",image);
-        MemberPanel memberPanel3 = new MemberPanel("123","huuu",image);
-        MemberPanel memberPanel4 = new MemberPanel("hello","huuu",image);
-        MemberPanel memberPanel5 = new MemberPanel("jane","huuu",image);
-        MemberPanel memberPanel6 = new MemberPanel("dan","huuu",image);
-        MemberPanel memberPanel7 = new MemberPanel("smith","huuu",image);
-        MemberPanel memberPanel8 = new MemberPanel("jsckson","huuu",image);
-        MemberPanel memberPanel9 = new MemberPanel("jsckson","huuu",image);
-        MemberPanel memberPanel10 = new MemberPanel("jsckson","huuu",image);
+        //将从server获取的好友添加到列表中
 
-        friendList.add(memberPanel);
-        friendList.add(memberPanel2);
-        friendList.add(memberPanel3);
-        friendList.add(memberPanel4);
-        friendList.add(memberPanel5);
-        friendList.add(memberPanel6);
-        friendList.add(memberPanel7);
-        friendList.add(memberPanel8);
-        friendList.add(memberPanel9);
-        friendList.add(memberPanel10);
+        List<User> list = user.getFriendsList();
+        //获取好友列表中好友的详细信息，并设置在MemberPanel
+
+        for(int i=0;i<list.size();i++){
+            User friend = list.get(i);
+
+            MemberPanel memberPanel = new MemberPanel(friend.getUsername(),friend.getInfo(),defaultImage);
+            friendList.add(memberPanel);
+        }
 
         for(MemberPanel panel:friendList){
             panel.setPreferredSize(new Dimension(this.getWidth()-5,50));

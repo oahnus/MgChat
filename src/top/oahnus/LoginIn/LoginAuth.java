@@ -1,7 +1,6 @@
 package top.oahnus.LoginIn;
 
 import top.oahnus.Bean.User;
-import top.oahnus.Dao.LoginAuthDAO;
 import top.oahnus.Extra.Alert;
 import top.oahnus.Util.MD5Util;
 
@@ -56,7 +55,7 @@ System.out.println("read");
 
             socket.shutdownOutput();
 
-Thread.sleep(100);
+//Thread.sleep(100);
 
             in = new ObjectInputStream(socket.getInputStream());
 //System.out.println(in == null);
@@ -70,9 +69,10 @@ Thread.sleep(100);
             alert.showAlert();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
+//        catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 //        return loginAuthDAO.verifyUser(username,password);
         return remoteUserInfo;
     }
