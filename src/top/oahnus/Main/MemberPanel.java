@@ -1,5 +1,7 @@
 package top.oahnus.Main;
 
+import top.oahnus.Bean.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -12,11 +14,28 @@ public class MemberPanel extends JPanel {
     private JLabel memberName,memberInfo;
     private JButton memberFigure;
     private Color old,hover;
+    private User friend;
 
+    MemberPanel(User friend,Image figure){
+        this.friend  = friend;
+        memberName   = new JLabel();
+        memberInfo   = new JLabel();
+        memberFigure = new JButton();
+
+        memberName.setText(friend.getUsername());
+        memberInfo.setText(friend.getInfo());
+        memberFigure.setIcon(new ImageIcon(figure));
+
+        hover = new Color(204,204,204);
+        old = this.getBackground();
+
+        setting();
+        addListener();
+    }
 
     MemberPanel(String name, String info, Image figure){
-        memberName = new JLabel();
-        memberInfo = new JLabel();
+        memberName   = new JLabel();
+        memberInfo   = new JLabel();
         memberFigure = new JButton();
 
         memberName.setText(name);
@@ -47,12 +66,13 @@ public class MemberPanel extends JPanel {
                 if(e.getClickCount() == 2){
                     //执行方法
                     //TODO
+                    ChatRoomFrame chatRoom = new ChatRoomFrame(friend);
+                    Thread thread = new Thread(chatRoom);
+                    thread.start();
                 }
             }
         });
     }
-
-
 
     private void setting() {
         setLayout(null);

@@ -19,7 +19,7 @@ import java.io.IOException;
 public class LoginFrame extends JFrame {
 
     private final String REGISTERURL = "http://127.0.0.1:12306/MgChatServer/servlet/register.action";
-    private final String FORGETURL = "http://127.0.0.1:12306";
+    private final String FORGETURL   = "http://127.0.0.1:12306";
 
     //用户账号输入框
     private JTextField userIDField;
@@ -37,13 +37,13 @@ public class LoginFrame extends JFrame {
     private User user;
 
     LoginFrame(){
-        backLabel = new JLabel();
-        userIDField = new JTextField("10000");//test账号
+        backLabel     = new JLabel();
+        userIDField   = new JTextField("10000");//test账号
         passwordField = new JPasswordField("123456");//test账号
 
-        figureLabel = new JLabel();
-        loginButton = new JButton("<html>登  陆</html>");
-        forgetLabel = new JLabel("<html><u>忘记密码</u><html>");
+        figureLabel   = new JLabel();
+        loginButton   = new JButton("<html>登  陆</html>");
+        forgetLabel   = new JLabel("<html><u>忘记密码</u><html>");
         registerLabel = new JLabel("<html><u>注册账号</u><html>");
 
         font = new Font("Courier New",Font.PLAIN,14);
@@ -59,10 +59,9 @@ public class LoginFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 LoginAuth loginAuth = new LoginAuth();
-                String userID = userIDField.getText();
-                String password = passwordField.getText();
-
-                user = loginAuth.verify(userID,password);
+                String userID       = userIDField.getText();
+                String password     = passwordField.getText();
+                user                = loginAuth.verify(userID,password);
 
                 //使用user传送数据可能有局限性？
                 //TODO
@@ -167,9 +166,9 @@ public class LoginFrame extends JFrame {
             e.printStackTrace();
         }
         setIconImage(icon);
-        Image backImage =back.getScaledInstance(backLabel.getWidth(),backLabel.getHeight(),Image.SCALE_DEFAULT);
+        Image backImage = back.getScaledInstance(backLabel.getWidth(),backLabel.getHeight(),Image.SCALE_DEFAULT);
         backLabel.setIcon(new ImageIcon(backImage));
-        Image figure = icon.getScaledInstance(figureLabel.getWidth(),figureLabel.getHeight(),Image.SCALE_DEFAULT);
+        Image figure    = icon.getScaledInstance(figureLabel.getWidth(),figureLabel.getHeight(),Image.SCALE_DEFAULT);
         figureLabel.setIcon(new ImageIcon(figure));
 
         //设置字体

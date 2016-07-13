@@ -19,46 +19,41 @@ import java.io.IOException;
  */
 public class MainFrame extends JFrame{
 
-    private User user;
-
+    private User user       = null;
     //关闭，最小化按钮
-    private JLabel close,min;
+    private JLabel close    = new JLabel();
+    private JLabel min      = new JLabel();
     //背景
-    private JLabel back;
+    private JLabel back     = new JLabel();
+    //昵称，个人简介
+    private JLabel username = new JLabel();
+    private JLabel userInfo = new JLabel();
     //好友列表滚动条
     private JScrollPane scrollPane;
     //好友列表
     private FriendsPanel friendsPanel;
     //个人信息
-    private JPanel userInfoPanel;
-    //昵称，个人简介
-    private JLabel username,userInfo;
+    private JPanel userInfoPanel = new JPanel();
     //头像
-    private JButton userFigure;
+    private JButton userFigure   = new JButton();
+    //系统托盘
+    SystemTray systemTray        = SystemTray.getSystemTray();
+
+    private MainFrame self       = this;
+    //记录鼠标在窗体内的坐标，留待实现窗体拖动使用
+    private int mouseX           = 0;
+    private int mouseY           = 0;
+    //设定鼠标在某一范围内点击拖动有效,true 有效，false 无效
+    private boolean isCanMoved   = true;
+
+    public static final int WINDOWWIDTH  = 280;
+    public static final int WINDOWHEIGHT = 640;
 
     Image minIcon,closeIcon,userIcon,background,icon;
 
-    //系统托盘
-    SystemTray systemTray = SystemTray.getSystemTray();
-
-    private MainFrame self = this;
-    //记录鼠标在窗体内的坐标，留待实现窗体拖动使用
-    private int mouseX = 0, mouseY = 0;
-    //设定鼠标在某一范围内点击拖动有效,true 有效，false 无效
-    private boolean isCanMoved = true;
-
-    public static final int WINDOWWIDTH = 280,WINDOWHEIGHT = 640;
-
     public MainFrame(User user){
         this.user     = user;
-        close         = new JLabel();
-        min           = new JLabel();
-        back          = new JLabel();
-        username      = new JLabel();
-        userInfo      = new JLabel();
-        userFigure    = new JButton();
         friendsPanel  = new FriendsPanel(user);
-        userInfoPanel = new JPanel();
         scrollPane    = new JScrollPane(friendsPanel);
     }
 
@@ -82,7 +77,6 @@ public class MainFrame extends JFrame{
             closeIcon  = ImageIO.read(new File("resource/close.png"));
             background = ImageIO.read(new File("resource/background.jpg"));
             icon       = ImageIO.read(new File("resource/icon.jpg"));
-
             userIcon   = ImageIO.read(new File(user.getFigure()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,10 +107,10 @@ public class MainFrame extends JFrame{
 
         //设置图标
         setIconImage(icon);
-        Image closeImage = closeIcon.getScaledInstance(20,20,Image.SCALE_DEFAULT);
-        close.setIcon(new ImageIcon(closeImage));
-        Image minImage = minIcon.getScaledInstance(20,20,Image.SCALE_DEFAULT);
-        min.setIcon(new ImageIcon(minImage));
+//        Image closeImage = closeIcon.getScaledInstance(20,20,Image.SCALE_DEFAULT);
+        close.setIcon(new ImageIcon(closeIcon));
+//        Image minImage = minIcon.getScaledInstance(20,20,Image.SCALE_DEFAULT);
+        min.setIcon(new ImageIcon(minIcon));
         Image backImage = background.getScaledInstance(back.getWidth(),back.getHeight(),Image.SCALE_DEFAULT);
         back.setIcon(new ImageIcon(backImage));
 
@@ -148,7 +142,6 @@ public class MainFrame extends JFrame{
     }
 
     private void addListener(){
-
         //添加无边框窗体的拖动功能
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -163,7 +156,6 @@ public class MainFrame extends JFrame{
                 }
             }
         });
-
         this.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -187,14 +179,12 @@ public class MainFrame extends JFrame{
                 }
             }
         });
-
         close.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.exit(0);
             }
         });
-
         min.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

@@ -1,6 +1,7 @@
 package top.oahnus.Main;
 
 import top.oahnus.Bean.User;
+import top.oahnus.ConnectToServer.FriendsStateMonitor;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -75,8 +76,8 @@ System.out.println("无法获取图片资源");
 
         for(int i=0;i<list.size();i++){
             User friend = list.get(i);
-
-            MemberPanel memberPanel = new MemberPanel(friend.getUsername(),friend.getInfo(),defaultImage);
+//            MemberPanel memberPanel = new MemberPanel(friend.getUsername(),friend.getInfo(),defaultImage);
+            MemberPanel memberPanel = new MemberPanel(friend,defaultImage);
             friendList.add(memberPanel);
         }
 
@@ -111,6 +112,13 @@ System.out.println("无法获取图片资源");
                 }
             }
         });
+
+        //添加好友在线状态的监视类
+        FriendsStateMonitor monitor = new FriendsStateMonitor(user);
+        monitor.connectToServer();
+
+        Thread monitorThread = new Thread(monitor);
+        monitorThread.start();
     }
 
     private void getImageFromResource() throws IOException {
