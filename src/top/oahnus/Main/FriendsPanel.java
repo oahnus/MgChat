@@ -114,11 +114,11 @@ System.out.println("无法获取图片资源");
         });
 
         //添加好友在线状态的监视类
-        FriendsStateMonitor monitor = new FriendsStateMonitor(user);
-        monitor.connectToServer();
-
-        Thread monitorThread = new Thread(monitor);
-        monitorThread.start();
+//        FriendsStateMonitor monitor = new FriendsStateMonitor(user);
+//        monitor.connectToServer();
+//
+//        Thread monitorThread = new Thread(monitor);
+//        monitorThread.start();
     }
 
     private void getImageFromResource() throws IOException {

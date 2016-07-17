@@ -1,6 +1,8 @@
 package top.oahnus.Main;
 
 import top.oahnus.Bean.User;
+import top.oahnus.ConnectToServer.ChatRoom;
+import top.oahnus.ConnectToServer.FriendsStateMonitor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -65,10 +67,23 @@ public class MemberPanel extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 if(e.getClickCount() == 2){
                     //执行方法
-                    //TODO
-                    ChatRoomFrame chatRoom = new ChatRoomFrame(friend);
+
+                    FriendsStateMonitor monitor = new FriendsStateMonitor(friend);
+                    String ip = monitor.connectToServer();
+
+System.out.println(ip);
+
+                    ChatRoom room = new ChatRoom(ip);
+                    Thread roomThread = new Thread(room);
+
+                    ChatRoomFrame chatRoom = new ChatRoomFrame(friend, room);
                     Thread thread = new Thread(chatRoom);
+
+                    room.setChatRoomFrameframe(chatRoom);
+
                     thread.start();
+                    roomThread.start();
+
                 }
             }
         });
