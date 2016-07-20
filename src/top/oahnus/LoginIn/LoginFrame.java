@@ -72,19 +72,19 @@ public class LoginFrame extends JFrame {
                 if(user!=null){
                     System.out.println("success");
 
-                    //在链接成功后发送本机ip并存入server
-                    try {
-                        Socket socket = new Socket("127.0.0.1",8889);
-                        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-                        dos.writeUTF("PUTIP#"+user.getUserID()+"#"+ InetAddress.getLocalHost().getHostAddress());
-                        dos.flush();
-
-                        dos.close();
-                        socket.close();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-System.out.println("发送ip数据时出错");
-                    }
+//                    //在链接成功后发送本机ip并存入server
+//                    try {
+//                        Socket socket = new Socket("127.0.0.1",8889);
+//                        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+//                        dos.writeUTF("PUTIP#"+user.getUserID()+"#"+ InetAddress.getLocalHost().getHostAddress());
+//                        dos.flush();
+//
+//                        dos.close();
+//                        socket.close();
+//                    } catch (IOException e1) {
+//                        e1.printStackTrace();
+//System.out.println("发送ip数据时出错");
+//                    }
 
                     MainFrame mainFrame = new MainFrame(user);
                     mainFrame.launch();

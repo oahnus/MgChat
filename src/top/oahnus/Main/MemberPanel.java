@@ -17,31 +17,17 @@ public class MemberPanel extends JPanel {
     private JButton memberFigure;
     private Color old,hover;
     private User friend;
+    private User user;
 
-    MemberPanel(User friend,Image figure){
+    MemberPanel(User friend,User user,Image figure){
         this.friend  = friend;
+        this.user = user;
         memberName   = new JLabel();
         memberInfo   = new JLabel();
         memberFigure = new JButton();
 
         memberName.setText(friend.getUsername());
         memberInfo.setText(friend.getInfo());
-        memberFigure.setIcon(new ImageIcon(figure));
-
-        hover = new Color(204,204,204);
-        old = this.getBackground();
-
-        setting();
-        addListener();
-    }
-
-    MemberPanel(String name, String info, Image figure){
-        memberName   = new JLabel();
-        memberInfo   = new JLabel();
-        memberFigure = new JButton();
-
-        memberName.setText(name);
-        memberInfo.setText(info);
         memberFigure.setIcon(new ImageIcon(figure));
 
         hover = new Color(204,204,204);
@@ -68,21 +54,13 @@ public class MemberPanel extends JPanel {
                 if(e.getClickCount() == 2){
                     //执行方法
 
-                    FriendsStateMonitor monitor = new FriendsStateMonitor(friend);
-                    String ip = monitor.connectToServer();
+//                    FriendsStateMonitor monitor = new FriendsStateMonitor(user);
+//                    monitor.connectToServer();
 
-System.out.println(ip);
-
-                    ChatRoom room = new ChatRoom(ip);
-                    Thread roomThread = new Thread(room);
-
-                    ChatRoomFrame chatRoom = new ChatRoomFrame(friend, room);
+                    ChatRoomFrame chatRoom = new ChatRoomFrame(user,friend);
                     Thread thread = new Thread(chatRoom);
 
-                    room.setChatRoomFrameframe(chatRoom);
-
                     thread.start();
-                    roomThread.start();
 
                 }
             }

@@ -77,7 +77,7 @@ System.out.println("无法获取图片资源");
         for(int i=0;i<list.size();i++){
             User friend = list.get(i);
 //            MemberPanel memberPanel = new MemberPanel(friend.getUsername(),friend.getInfo(),defaultImage);
-            MemberPanel memberPanel = new MemberPanel(friend,defaultImage);
+            MemberPanel memberPanel = new MemberPanel(friend,user,defaultImage);
             friendList.add(memberPanel);
         }
 

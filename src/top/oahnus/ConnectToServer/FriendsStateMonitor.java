@@ -1,12 +1,10 @@
 package top.oahnus.ConnectToServer;
 
+import top.oahnus.Bean.Message;
 import top.oahnus.Bean.User;
 import top.oahnus.Main.MemberPanel;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.BindException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -20,18 +18,19 @@ import java.util.Map;
  */
 
 /**
- * 连接服务器，通过发送好友ID来通过服务端获取该好友的ip地址
+ * 暂时舍弃，留待后用
  */
 public class FriendsStateMonitor{
     private Socket socket                = null;
-    private DataOutputStream dos         = null;
-    private DataInputStream dis        = null;
+    private ObjectOutputStream oos         = null;
+    private ObjectInputStream ois        = null;
 
     private List<User> friends           = null;
 //    public static Map<String,String> friendsIP = new HashMap<>();
 
     private String ipAddress             = null;
     private User user;
+    private Message msg = new Message();
 
     public FriendsStateMonitor(User user){
         this.user = user;
@@ -40,38 +39,33 @@ public class FriendsStateMonitor{
     /**
      * 初始化，创建痛服务器的连接
      */
-    public String connectToServer(){
+    public void connectToServer(){
         try {
-            socket      = new Socket("127.0.0.1",8889);
-            dos         = new DataOutputStream(socket.getOutputStream());
-            dis         = new DataInputStream(socket.getInputStream());
+            socket      = new Socket("127.0.0.1",8888);
+            oos         = new ObjectOutputStream(socket.getOutputStream());
+            ois         = new ObjectInputStream(socket.getInputStream());
             ipAddress   = InetAddress.getLocalHost().getHostAddress();
 
-            String msg = "GETIP#"+user.getUserID();
+            msg.setCode("LOGIN");
+            msg.setContent(user.getUserID());
 
-            dos.writeUTF(msg);
-            dos.flush();
-
-System.out.println(msg);
-
-            ipAddress = dis.readUTF();
-
+            oos.writeObject(msg);
+            oos.flush();
+System.out.println("LOGIN");
         }catch(BindException e){
-System.out.println("8889端口被占用");
+System.out.println("8888端口被占用");
         }
         catch (IOException e) {
             e.printStackTrace();
         }finally {
 //            close();
         }
-
-        return ipAddress;
     }
 
     private void close(){
         try {
-            if(dis    != null){dis.close();}
-            if(dos    != null){dos.close();}
+            if(ois    != null){ois.close();}
+            if(oos    != null){oos.close();}
             if(socket != null){socket.close();}
         } catch (IOException e) {
             e.printStackTrace();
@@ -90,17 +84,4 @@ System.out.println("8889端口被占用");
 //        }
 //    }
 
-    public static void main(String[] args){
-        User user = new User();
-        user.setUserID("10001");
-
-        FriendsStateMonitor monitor = new FriendsStateMonitor(user);
-        String s = monitor.connectToServer();
-        System.out.println(s);
-
-        FriendsStateMonitor monitor1 = new FriendsStateMonitor(user);
-        String ss = monitor1.connectToServer();
-        System.out.println(ss);
-//        monitor.test();
-    }
 }
