@@ -1,8 +1,6 @@
 package top.oahnus.Main;
 
 import top.oahnus.Bean.User;
-import top.oahnus.ConnectToServer.ChatRoom;
-import top.oahnus.ConnectToServer.FriendsStateMonitor;
 
 import javax.swing.*;
 import java.awt.*;
