@@ -2,6 +2,7 @@ package top.oahnus.Main;
 
 import javafx.scene.text.*;
 import top.oahnus.Bean.User;
+import top.oahnus.ConnectToServer.RecordReader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -58,6 +59,11 @@ public class MainFrame extends JFrame{
     }
 
     public void launch(){
+        //判断是否有离线信
+        RecordReader recordReader = new RecordReader(friendsPanel.getFriendList(),user.getUserID());
+        Thread thread = new Thread(recordReader);
+        thread.start();
+
         setting();
         addListener();
     }

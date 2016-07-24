@@ -2,6 +2,7 @@ package top.oahnus.Main;
 
 import top.oahnus.Bean.Message;
 import top.oahnus.Bean.User;
+import top.oahnus.Util.TimeUtil;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -65,8 +66,9 @@ public class ChatRoomFrame extends JFrame implements Runnable{
 
     private User friend;
     private User user;
-
-    private Date date = new Date();
+    //输入框与信息框的字体
+    private Font font = new Font("Microsoft YaHei",Font.PLAIN,14);
+    private Thread thread;
 
     public ChatRoomFrame(User user,User friend){
         this.friend = friend;
@@ -101,14 +103,16 @@ public class ChatRoomFrame extends JFrame implements Runnable{
 //        messageArea.setBounds(0,90,WINDOWWIDTH,290);
         messageArea.setBounds(0,0,WINDOWWIDTH,290);
         messageArea.setLineWrap(true);
-        messageArea.setEnabled(false);
+//        messageArea.setEnabled(false);
+        messageArea.setEditable(false);
+        messageArea.setFont(font);
 //        messageArea.setAutoscrolls(true);
 //
 //        messageArea.setCaretPosition(messageArea.getText().length());
 //
         inputArea.setBounds(0,400,WINDOWWIDTH,90);
         inputArea.setLineWrap(true);
-
+        inputArea.setFont(font);
         inputArea.setFocusable(true);
 
         closeButton.setBounds(WINDOWWIDTH-140,490,65,25);
@@ -220,6 +224,7 @@ public class ChatRoomFrame extends JFrame implements Runnable{
             @Override
             public void actionPerformed(ActionEvent e) {
                 disConnect();
+System.out.println("发送关闭");
                 self.dispose();
             }
         });
@@ -281,8 +286,9 @@ public class ChatRoomFrame extends JFrame implements Runnable{
         inputArea.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_ENTER){
-System.out.println("###fasong");
+                if(e.getKeyChar() == '\n'){
+System.out.println("##发送成功");
+                    sendMessage();
                 }
             }
         });
@@ -290,32 +296,38 @@ System.out.println("###fasong");
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Message msg = new Message();
-                msg.setCode("MSG");
-                msg.setContent(inputArea.getText().trim());
-                msg.setTargetID(friend.getUserID());
-
-//System.out.println(msg.getContent());
-
-                messageArea.setText(messageArea.getText()+"local"+":"+msg.getContent()+"\n");
-                inputArea.setText("");
-
-                try {
-                    oos.writeObject(msg);
-System.out.println("##发送成功");
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-System.out.println("##消息发送失败");
-                }
+                sendMessage();
             }
         });
 
         self.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                disConnect();
                 self.dispose();
             }
         });
+    }
+
+    public void sendMessage(){
+        Message msg = new Message();
+        msg.setCode("MSG");
+        msg.setContent(inputArea.getText().trim());
+        msg.setTargetID(friend.getUserID());
+        msg.setSourceID(user.getUserID());
+
+//System.out.println(msg.getContent());
+
+        messageArea.setText(messageArea.getText()+ TimeUtil.getTimeNow()+" "+user.getUsername()+" : "+msg.getContent()+"\n");
+        inputArea.setText("");
+
+        try {
+            oos.writeObject(msg);
+            System.out.println("##发送成功");
+        } catch (IOException e1) {
+            e1.printStackTrace();
+            System.out.println("##消息发送失败");
+        }
     }
 
     public void connectToServer(){
@@ -327,7 +339,7 @@ System.out.println("##消息发送失败");
             isRunning=true;
 
             Message loginMsg = new Message();
-            loginMsg.setCode("LOGIN");
+            loginMsg.setCode("CHATIN");
             loginMsg.setContent(user.getUserID());
 
             oos.writeObject(loginMsg);
@@ -337,20 +349,43 @@ System.out.println("##消息发送失败");
             System.out.println("##链接出错");
         }
 
-        Thread thread = new Thread(new Server());
+        thread = new Thread(new Server());
         thread.start();
 System.out.println("##服务端创建成功");
     }
 
-    public void setMessageArea(String message){
-        String newMessage = messageArea.getText();
-        newMessage = newMessage+username+":"+message+"\n";
-System.out.println(newMessage);
-        messageArea.setText(newMessage);
-    }
-
     private void disConnect() {
+        isRunning=false;
+        Message closeMsg = new Message();
+        closeMsg.setCode("CLOSE");
+        try {
+            oos.writeObject(closeMsg);
+        } catch (IOException e) {
+            e.printStackTrace();
+System.out.println("关闭信息发送失败");
+        }
 
+//        thread.stop();
+        thread = null;
+
+        try{
+            socket.shutdownOutput();
+            socket.shutdownInput();
+            if(oos!=null){
+                oos.close();
+                oos = null;
+            }
+            if(ois!=null){
+                ois.close();
+                ois = null;
+            }
+            if(socket!=null){
+                socket.close();
+                socket = null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void readImage(){
@@ -367,6 +402,13 @@ System.out.println(newMessage);
     @Override
     public void run() {
         init();
+    }
+
+    public void setMessageArea(String msg){
+        StringBuffer sb = new StringBuffer();
+        sb.append(messageArea.getText()).append(friend.getUsername()).append(" : ").append(msg).append("\n");
+        messageArea.setText(sb.toString());
+        messageArea.setCaretPosition(messageArea.getText().length());
     }
 
     public static void main(String[] args){
@@ -392,17 +434,16 @@ System.out.println(newMessage);
 
         @Override
         public void run() {
-            Message msg = new Message();
+            Message msg;
             try{
                 while(isRunning){
 System.out.println("准备接受服务器消息");
-                    msg = (Message) ois.readObject();
                     msg = (Message) ois.readObject();
 System.out.println("接收消息成功");
 
 System.out.println(msg.getContent());
 
-                    messageArea.setText(friend.getUsername()+":"+messageArea.getText()+msg.getContent()+"\n");
+                    messageArea.setText(messageArea.getText()+ TimeUtil.getTimeNow()+" "+friend.getUsername()+" : "+msg.getContent()+"\n");
                     messageArea.setCaretPosition(messageArea.getText().length());
                 }
             } catch (IOException e) {

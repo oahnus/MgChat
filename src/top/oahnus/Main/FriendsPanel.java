@@ -2,6 +2,7 @@ package top.oahnus.Main;
 
 import top.oahnus.Bean.User;
 import top.oahnus.ConnectToServer.FriendsStateMonitor;
+import top.oahnus.ConnectToServer.RecordReader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -10,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.List;
 
@@ -87,8 +89,26 @@ System.out.println("无法获取图片资源");
             this.add(panel);
             panel.setVisible(false);
         }
+//
+//System.out.println("读取离线");
+//        RecordReader recordReader = new RecordReader();
+//System.out.println("123123123");
+//        recordReader.connectToServer();
+//        File file = recordReader.getFile();
+//
+//System.out.println("File is null?"+file == null);
+//System.out.println("读取完成");
+        panelTitle.setIcon(tabUpIcon);
+        for(MemberPanel panel:friendList){
+            panel.setVisible(true);
+        }
+        update();
 
         this.setVisible(true);
+
+        for(MemberPanel panel:friendList){
+            panel.setHasNewMsg("new Message");
+        }
     }
 
     private void addListener(){
@@ -135,5 +155,9 @@ System.out.println("无法获取图片资源");
 
     public void update(){
         updateUI();
+    }
+
+    public List<MemberPanel> getFriendList() {
+        return friendList;
     }
 }

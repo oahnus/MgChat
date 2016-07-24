@@ -22,7 +22,7 @@ import java.io.IOException;
 //登录界面主窗体
 public class LoginFrame extends JFrame {
 
-    private final String REGISTERURL = "http://127.0.0.1:12306/MgChatServer/servlet/register.action";
+    private final String REGISTERURL = "http://127.0.0.1:12306/MgChatServer/servlet/registerServlet";
     private final String FORGETURL   = "http://127.0.0.1:12306";
 
     //用户账号输入框

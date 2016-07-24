@@ -6,13 +6,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by oahnus on 2016/7/1.
+ * Created by oahnus on 2016/7/4.
  */
-
-//保存登陆用户信息
 public class User implements Serializable{
 
     private static final long serialVersionUID = 1L;
+
     //账号
     private String userID;
     //昵称
@@ -32,6 +31,16 @@ public class User implements Serializable{
     //头像
     private Image figureImage;
     //好友列表
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     private List<User> friendsList;
 
     public  Image getFigureImage() {
@@ -90,11 +99,11 @@ public class User implements Serializable{
         this.info = info;
     }
 
-    public Date getBornDate() {
+    public Date getBorn() {
         return born;
     }
 
-    public void setBornDate(Date bornDate) {
+    public void setBorn(Date born) {
         this.born = born;
     }
 
@@ -106,11 +115,11 @@ public class User implements Serializable{
         this.sex = sex;
     }
 
-    public String getAdress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAdress(String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 }

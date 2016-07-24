@@ -10,6 +10,15 @@ public class Message implements Serializable{
 
     private String code;
     private String targetID;
+    private String sourceID;
+
+    public String getSourceID() {
+        return sourceID;
+    }
+
+    public void setSourceID(String sourceID) {
+        this.sourceID = sourceID;
+    }
 
     public String getTargetID() {
         return targetID;
