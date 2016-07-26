@@ -6,6 +6,7 @@ import top.oahnus.ConnectToServer.RecordReader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -47,6 +48,9 @@ public class MainFrame extends JFrame{
     //设定鼠标在某一范围内点击拖动有效,true 有效，false 无效
     private boolean isCanMoved   = true;
 
+    private RecordReader recordReader;
+    private Thread recordReaderThread;
+
     public static final int WINDOWWIDTH  = 280;
     public static final int WINDOWHEIGHT = 640;
 
@@ -60,9 +64,9 @@ public class MainFrame extends JFrame{
 
     public void launch(){
         //判断是否有离线信
-        RecordReader recordReader = new RecordReader(friendsPanel.getFriendList(),user.getUserID());
-        Thread thread = new Thread(recordReader);
-        thread.start();
+        recordReader = new RecordReader(friendsPanel.getFriendList(),user.getUserID());
+        recordReaderThread = new Thread(recordReader);
+        recordReaderThread.start();
 
         setting();
         addListener();
@@ -90,6 +94,8 @@ public class MainFrame extends JFrame{
 
         //设置窗体尺寸，位置
         setBounds(1000, 10, WINDOWWIDTH,WINDOWHEIGHT);
+        //设置边框
+        getRootPane().setBorder(new LineBorder(Color.gray));
 
         //控件尺寸位置
         close.setBounds(WINDOWWIDTH-20,0,20,20);
@@ -188,6 +194,8 @@ public class MainFrame extends JFrame{
         close.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                recordReader.sendCloseMessage(user.getUserID());
+                recordReaderThread.stop();
                 System.exit(0);
             }
         });

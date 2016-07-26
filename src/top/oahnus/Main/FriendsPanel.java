@@ -105,10 +105,6 @@ System.out.println("无法获取图片资源");
         update();
 
         this.setVisible(true);
-
-        for(MemberPanel panel:friendList){
-            panel.setHasNewMsg("new Message");
-        }
     }
 
     private void addListener(){

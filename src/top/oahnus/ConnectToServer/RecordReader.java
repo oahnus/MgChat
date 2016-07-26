@@ -17,7 +17,6 @@ import java.util.List;
 public class RecordReader implements Runnable{
     public static final String SERVERIP = "127.0.0.1";
     private Socket socket;
-    private File file;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     private List<MemberPanel> memberPanelList;
@@ -52,26 +51,52 @@ System.out.println("接受到结果");
                 String sourceID = message.getSourceID();
                 String content = message.getContent();
 
-                for(int i=0;i<memberPanelList.size();i++){
-                    MemberPanel memberPanel = memberPanelList.get(i);
-                    if(memberPanel.getFriendID().equals(sourceID)){
-                        memberPanel.setHasNewMsg("新消息");
-                        if(!(content.equals("")||content==null)) {
-System.out.println(content);
-                            memberPanel.getMessages().add(content);
-                        }
-                    }
-                }
+                setFriendHasNewMsg(sourceID, content);
                 message = (Message) ois.readObject();
             }
 
-            //结束后关闭这个线程
+            //接受在线状态，未打开聊天对话框情况下的消息
+            while(true){
+System.out.println("接受在线消息");
+                Message msg = (Message) ois.readObject();
+
+                String sourceID = msg.getSourceID();
+                String content  = msg.getContent();
+
+System.out.println(content);
+                setFriendHasNewMsg(sourceID, content);
+            }
+
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void sendCloseMessage(String userID){
+        Message message = new Message();
+        message.setCode("CLOSECLIENT");
+        message.setSourceID(userID);
+
+        try {
+            oos.writeObject(message);
+            oos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setFriendHasNewMsg(String sourceID, String content) {
+        for (MemberPanel memberPanel : memberPanelList) {
+            if (memberPanel.getFriendID().equals(sourceID)) {
+                memberPanel.setHasNewMsg("新消息");
+                if (!(content.equals("") || content == null)) {
+                    memberPanel.getMessages().add(content);
+                }
+            }
         }
     }
 }

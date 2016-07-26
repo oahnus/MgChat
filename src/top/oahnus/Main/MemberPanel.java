@@ -73,10 +73,18 @@ public class MemberPanel extends JPanel {
 
 System.out.println(messages.size());
 
+                    //做短暂延时处理，若删去，运行时会抛出Exception in thread "AWT-EventQueue-0"
+                    //原因在于chatroom与此程序段属不同线程，当执行setMessageArea时chatRoom中的messageArea可能还未初始化
+                    //因此程序会出现离线信息显示不全的情况
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+
                     if(!hasNewMsg.getText().equals("")) {
-                        for (String str:messages) {
-                            System.out.println(str);
-                            chatRoom.setMessageArea(str);
+                        for (int i=0;i<messages.size();i++) {
+                            chatRoom.setMessageArea(messages.get(i));
                         }
                     }
                     hasNewMsg.setText("");

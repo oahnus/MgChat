@@ -69,6 +69,7 @@ public class ChatRoomFrame extends JFrame implements Runnable{
     //输入框与信息框的字体
     private Font font = new Font("Microsoft YaHei",Font.PLAIN,14);
     private Thread thread;
+    private Server server;
 
     public ChatRoomFrame(User user,User friend){
         this.friend = friend;
@@ -349,7 +350,9 @@ System.out.println("##发送成功");
             System.out.println("##链接出错");
         }
 
-        thread = new Thread(new Server());
+        //将server的定义放在前面，方便在结束窗体时关闭接收server信息
+        server = new Server();
+        thread = new Thread(server);
         thread.start();
 System.out.println("##服务端创建成功");
     }
@@ -364,10 +367,6 @@ System.out.println("##服务端创建成功");
             e.printStackTrace();
 System.out.println("关闭信息发送失败");
         }
-
-//        thread.stop();
-        thread = null;
-
         try{
             socket.shutdownOutput();
             socket.shutdownInput();
@@ -383,6 +382,11 @@ System.out.println("关闭信息发送失败");
                 socket.close();
                 socket = null;
             }
+
+            thread.stop();
+            server = null;
+            thread = null;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
