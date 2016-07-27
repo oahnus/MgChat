@@ -6,6 +6,7 @@ import top.oahnus.ConnectToServer.RecordReader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.Font;
@@ -25,6 +26,10 @@ public class MainFrame extends JFrame{
     //关闭，最小化按钮
     private JLabel close    = new JLabel();
     private JLabel min      = new JLabel();
+    //添加好友，菜单，设置
+    private JLabel addItem  = new JLabel();
+    private JLabel menuItem = new JLabel();
+    private JLabel settingItem = new JLabel();
     //背景
     private JLabel back     = new JLabel();
     //昵称，个人简介
@@ -55,6 +60,8 @@ public class MainFrame extends JFrame{
     public static final int WINDOWHEIGHT = 640;
 
     Image minIcon,closeIcon,userIcon,background,icon;
+    private ImageIcon menuIcon,addIcon,settingIcon;
+    private Border origin = menuItem.getBorder();
 
     public MainFrame(User user){
         this.user     = user;
@@ -81,13 +88,11 @@ public class MainFrame extends JFrame{
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //加载图标图片
+        /**
+         * 加载图标图片
+         */
         try {
-            minIcon    = ImageIO.read(new File("resource/sub.png"));
-            closeIcon  = ImageIO.read(new File("resource/close.png"));
-            background = ImageIO.read(new File("resource/background.jpg"));
-            icon       = ImageIO.read(new File("resource/icon.jpg"));
-            userIcon   = ImageIO.read(new File(user.getFigure()));
+            readImage();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,6 +106,11 @@ public class MainFrame extends JFrame{
         close.setBounds(WINDOWWIDTH-20,0,20,20);
         min.setBounds(WINDOWWIDTH-40,0,20,20);
         back.setBounds(0,0,WINDOWWIDTH,160);
+
+        //底部菜单栏
+        menuItem.setBounds(20,WINDOWHEIGHT-20,80,20);
+        addItem.setBounds(100,WINDOWHEIGHT-20,80,20);
+        settingItem.setBounds(180,WINDOWHEIGHT-20,80,20);
 
         //用户信息panel设置
         userInfoPanel.setBounds(0,30,WINDOWWIDTH,140);
@@ -128,6 +138,11 @@ public class MainFrame extends JFrame{
 
         userFigure.setIcon(new ImageIcon(userIcon));
 
+        //设置底部菜单图标
+        addItem.setIcon(addIcon);
+        menuItem.setIcon(menuIcon);
+        settingItem.setIcon(settingIcon);
+
         //滚动条设置
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBounds(0,180,WINDOWWIDTH,WINDOWHEIGHT-200);
@@ -139,6 +154,9 @@ public class MainFrame extends JFrame{
         getContentPane().add(min);
         getContentPane().add(back);
         getContentPane().add(scrollPane);
+        getContentPane().add(menuItem);
+        getContentPane().add(addItem);
+        getContentPane().add(settingItem);
 
         //用户信息面板
         userInfoPanel.add(userFigure);
@@ -151,6 +169,26 @@ public class MainFrame extends JFrame{
 
         //显示主面板
         setVisible(true);
+    }
+
+    private void readImage() throws IOException {
+        minIcon    = ImageIO.read(new File("resource/icon/sub.png"));
+        closeIcon  = ImageIO.read(new File("resource/icon/close.png"));
+        background = ImageIO.read(new File("resource/icon/background.jpg"));
+        icon       = ImageIO.read(new File("resource/icon/icon.jpg"));
+        userIcon   = ImageIO.read(new File(user.getFigure()));
+
+        Image add,menu,setting;
+        add = ImageIO.read(new File("resource/icon/search.png"));
+        add = add.getScaledInstance(80,20,Image.SCALE_DEFAULT);
+        menu = ImageIO.read(new File("resource/icon/menu.png"));
+        menu = menu.getScaledInstance(80,20,Image.SCALE_DEFAULT);
+        setting = ImageIO.read(new File("resource/icon/setting.png"));
+        setting = setting.getScaledInstance(80,20,Image.SCALE_DEFAULT);
+
+        addIcon = new ImageIcon(add);
+        menuIcon = new ImageIcon(menu);
+        settingIcon = new ImageIcon(setting);
     }
 
     private void addListener(){
@@ -204,6 +242,48 @@ public class MainFrame extends JFrame{
             public void mouseClicked(MouseEvent e) {
                 //TODO
                 addSystemTray();
+            }
+        });
+
+        addItem.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                SearchFriendFrame searchFriendFrame = new SearchFriendFrame();
+                searchFriendFrame.LaunchFrame();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                addItem.setBorder(new LineBorder(Color.GRAY));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                addItem.setBorder(origin);
+            }
+        });
+
+        menuItem.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                menuItem.setBorder(new LineBorder(Color.GRAY));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                menuItem.setBorder(origin);
+            }
+        });
+
+        settingItem.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                settingItem.setBorder(new LineBorder(Color.GRAY));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                settingItem.setBorder(origin);
             }
         });
     }

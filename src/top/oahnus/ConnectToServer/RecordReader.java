@@ -14,6 +14,10 @@ import java.util.List;
 /**
  * Created by oahnus on 2016/7/22.
  */
+
+/**
+ * 读取离线消息，传送查找好友指令
+ */
 public class RecordReader implements Runnable{
     public static final String SERVERIP = "127.0.0.1";
     private Socket socket;
@@ -66,7 +70,6 @@ System.out.println("接受在线消息");
 System.out.println(content);
                 setFriendHasNewMsg(sourceID, content);
             }
-
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {

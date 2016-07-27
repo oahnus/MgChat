@@ -62,10 +62,6 @@ public class MemberPanel extends JPanel {
             public void mouseClicked(MouseEvent e) {
                 if(e.getClickCount() == 2){
                     //执行方法
-
-//                    FriendsStateMonitor monitor = new FriendsStateMonitor(user);
-//                    monitor.connectToServer();
-
                     ChatRoomFrame chatRoom = new ChatRoomFrame(user,friend);
                     Thread thread = new Thread(chatRoom);
 
@@ -73,9 +69,11 @@ public class MemberPanel extends JPanel {
 
 System.out.println(messages.size());
 
-                    //做短暂延时处理，若删去，运行时会抛出Exception in thread "AWT-EventQueue-0"
-                    //原因在于chatroom与此程序段属不同线程，当执行setMessageArea时chatRoom中的messageArea可能还未初始化
-                    //因此程序会出现离线信息显示不全的情况
+                    /**
+                     * 做短暂延时处理，若删去，运行时会抛出Exception in thread "AWT-EventQueue-0"
+                     * 原因在于chatroom与此程序段属不同线程，当执行setMessageArea时chatRoom中的messageArea可能还未初始化
+                     * 因此程序会出现离线信息显示不全的情况
+                     */
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e1) {

@@ -101,16 +101,11 @@ public class ChatRoomFrame extends JFrame implements Runnable{
         titlePanel.setBounds(0,0,WINDOWWIDTH,65);
         titlePanel.setBackground(Color.BLUE);
 
-//        messageArea.setBounds(0,90,WINDOWWIDTH,290);
         messageArea.setBounds(0,0,WINDOWWIDTH,290);
         messageArea.setLineWrap(true);
-//        messageArea.setEnabled(false);
         messageArea.setEditable(false);
         messageArea.setFont(font);
-//        messageArea.setAutoscrolls(true);
-//
-//        messageArea.setCaretPosition(messageArea.getText().length());
-//
+
         inputArea.setBounds(0,400,WINDOWWIDTH,90);
         inputArea.setLineWrap(true);
         inputArea.setFont(font);
@@ -123,11 +118,8 @@ public class ChatRoomFrame extends JFrame implements Runnable{
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setAutoscrolls(true);
         scrollPane.setBounds(0,90,WINDOWWIDTH,290);
-//        scrollPane.add(messageArea);
-
 
         getContentPane().add(titlePanel);
-//        getContentPane().add(messageArea);
         getContentPane().add(scrollPane);
         getContentPane().add(inputArea);
         getContentPane().add(closeButton);
@@ -145,13 +137,11 @@ public class ChatRoomFrame extends JFrame implements Runnable{
         close.setIcon(new ImageIcon(closeIcon));
 
         close.setBounds(WINDOWWIDTH-20,0,20,20);
-//        close.setOpaque(false);
         max.setBounds(WINDOWWIDTH-40,0,20,20);
         max.setOpaque(false);
         min.setBounds(WINDOWWIDTH-60,0,20,20);
         min.setOpaque(false);
 
-//        figureImage.setIcon();
         figureImage.setBounds(10,5,50,50);
         username.setText(friend.getUsername());
         username.setBounds(80,5,100,30);
@@ -233,12 +223,16 @@ System.out.println("发送关闭");
             @Override
             public void mouseClicked(MouseEvent e) {
                 clickNum++;
-                //全屏
+                /**
+                 * 全屏窗体
+                 */
                 if(clickNum%2!=0){
-//                    GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//                    GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
-//
-//                    graphicsDevice.setFullScreenWindow(self);
+                    /**
+                     * 设置窗体全屏的另外方式
+                     * GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                     * GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
+                     * graphicsDevice.setFullScreenWindow(self);
+                     */
                     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
                     self.setSize(dimension.width,dimension.height);
                     self.setLocation(0,0);
@@ -256,7 +250,9 @@ System.out.println("发送关闭");
 
                     scrollPane.setBounds(0,90,self.getWidth(),self.getHeight()-230);
                 }
-                //还原
+                /**
+                 * 还原窗体
+                 */
                 else{
                     self.setSize(WINDOWWIDTH,WINDOWHEIGHT);
                     max.setIcon(new ImageIcon(maxIcon));
@@ -310,6 +306,9 @@ System.out.println("##发送成功");
         });
     }
 
+    /**
+     * 发送消息，并将消息显示在聊天对话框中
+     */
     public void sendMessage(){
         Message msg = new Message();
         msg.setCode("MSG");
@@ -317,20 +316,21 @@ System.out.println("##发送成功");
         msg.setTargetID(friend.getUserID());
         msg.setSourceID(user.getUserID());
 
-//System.out.println(msg.getContent());
-
         messageArea.setText(messageArea.getText()+ TimeUtil.getTimeNow()+" "+user.getUsername()+" : "+msg.getContent()+"\n");
         inputArea.setText("");
 
         try {
             oos.writeObject(msg);
-            System.out.println("##发送成功");
+System.out.println("##发送成功");
         } catch (IOException e1) {
             e1.printStackTrace();
-            System.out.println("##消息发送失败");
+System.out.println("##消息发送失败");
         }
     }
 
+    /**
+     * 连接聊天服务器
+     */
     public void connectToServer(){
         try {
             socket=new Socket(SERVERIP,8888);
@@ -357,6 +357,9 @@ System.out.println("##发送成功");
 System.out.println("##服务端创建成功");
     }
 
+    /**
+     * 关闭连接
+     */
     private void disConnect() {
         isRunning=false;
         Message closeMsg = new Message();
@@ -392,6 +395,9 @@ System.out.println("关闭信息发送失败");
         }
     }
 
+    /**
+     * 读取图片资源
+     */
     private void readImage(){
         try {
             maxIcon   = ImageIO.read(new File("resource/max.png"));
@@ -408,6 +414,10 @@ System.out.println("关闭信息发送失败");
         init();
     }
 
+    /**
+     * 在聊天对话框中添加新的消息
+     * @param msg 新消息
+     */
     public void setMessageArea(String msg){
         StringBuffer sb = new StringBuffer();
         sb.append(messageArea.getText()).append(friend.getUsername()).append(" : ").append(msg).append("\n");
@@ -415,25 +425,9 @@ System.out.println("关闭信息发送失败");
         messageArea.setCaretPosition(messageArea.getText().length());
     }
 
-    public static void main(String[] args){
-        Image i = null;
-        try {
-            i = ImageIO.read(new File("resource/userFigure/1.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        User user = new User();
-        user.setUsername("保证");
-        user.setInfo("乘风破浪");
-        user.setFigureImage(i);
-
-//        ChatRoomFrame chatRoom = new ChatRoomFrame(user, room);
-//        Thread thread = new Thread(chatRoom);
-//        thread.start();
-
-    }
-
+    /**
+     * Server内部类,通过此类来与Server端发送接收消息
+     */
     class Server implements Runnable{
 
         @Override

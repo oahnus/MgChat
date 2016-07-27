@@ -65,7 +65,7 @@ System.out.println("无法获取图片资源");
 
         //加载默认头像
         try {
-            defaultImage = ImageIO.read(new File("resource/icon.jpg"));
+            defaultImage = ImageIO.read(new File("resource/icon/icon.jpg"));
             defaultImage = defaultImage.getScaledInstance(40,40,Image.SCALE_DEFAULT);
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,15 +89,7 @@ System.out.println("无法获取图片资源");
             this.add(panel);
             panel.setVisible(false);
         }
-//
-//System.out.println("读取离线");
-//        RecordReader recordReader = new RecordReader();
-//System.out.println("123123123");
-//        recordReader.connectToServer();
-//        File file = recordReader.getFile();
-//
-//System.out.println("File is null?"+file == null);
-//System.out.println("读取完成");
+
         panelTitle.setIcon(tabUpIcon);
         for(MemberPanel panel:friendList){
             panel.setVisible(true);
@@ -140,13 +132,14 @@ System.out.println("无法获取图片资源");
     private void getImageFromResource() throws IOException {
         Image tabUp,tabDown;
 
-        tabUp = ImageIO.read(new File("resource/tab_up.png"));
+        tabUp = ImageIO.read(new File("resource/icon/tab_up.png"));
         tabUp = tabUp.getScaledInstance(FIGUREICONWIDTH,FIGUREICONWIDTH,Image.SCALE_DEFAULT);
-        tabDown = ImageIO.read(new File("resource/tab_down.png"));
+        tabDown = ImageIO.read(new File("resource/icon/tab_down.png"));
         tabDown = tabDown.getScaledInstance(FIGUREICONWIDTH,FIGUREICONWIDTH,Image.SCALE_DEFAULT);
 
         tabUpIcon = new ImageIcon(tabUp);
         tabDownIcon = new ImageIcon(tabDown);
+
     }
 
     public void update(){

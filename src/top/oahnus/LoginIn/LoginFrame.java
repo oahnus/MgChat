@@ -155,8 +155,6 @@ public class LoginFrame extends JFrame {
         });
     }
 
-
-
     private void setting(){
         setLayout(null);
         setResizable(false);
@@ -178,8 +176,8 @@ public class LoginFrame extends JFrame {
         Image icon = null;
         Image back = null;
         try {
-            icon = ImageIO.read(new File("resource/icon.jpg"));
-            back = ImageIO.read(new File("resource/background.jpg"));
+            icon = ImageIO.read(new File("resource/icon/icon.jpg"));
+            back = ImageIO.read(new File("resource/icon/background.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
