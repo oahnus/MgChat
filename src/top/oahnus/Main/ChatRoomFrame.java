@@ -400,10 +400,10 @@ System.out.println("关闭信息发送失败");
      */
     private void readImage(){
         try {
-            maxIcon   = ImageIO.read(new File("resource/max.png"));
-            minIcon   = ImageIO.read(new File("resource/sub.png"));
-            closeIcon = ImageIO.read(new File("resource/close.png"));
-            returnIcon = ImageIO.read(new File("resource/max2.png"));
+            maxIcon   = ImageIO.read(new File("resource/icon/max.png"));
+            minIcon   = ImageIO.read(new File("resource/icon/sub.png"));
+            closeIcon = ImageIO.read(new File("resource/icon/close.png"));
+            returnIcon = ImageIO.read(new File("resource/icon/max2.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

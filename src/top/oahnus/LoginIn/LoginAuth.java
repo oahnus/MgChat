@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by oahnus on 2016/6/17.
@@ -32,53 +34,39 @@ public class LoginAuth {
     public User verify(String userID, String password) {
 //        LoginAuthDAO loginAuthDAO = new LoginAuthDAO();
         //本地用户信息
-        User localUserInfo = new User();
+        User localUser = new User();
         //远程用户信息
         User remoteUserInfo = null;
 
         password = MD5Util.encode2hex(password);
 
-        localUserInfo.setUserID(userID);
-        localUserInfo.setPassword(password);
-
-//System.out.println(password);
+        localUser.setUserID(userID);
+        localUser.setPassword(password);
 
         try {
             socket = new Socket("127.0.0.1",8887);
-
             out = new ObjectOutputStream(socket.getOutputStream());
 
-            out.writeObject(localUserInfo);
+            Map<String,User> map = new HashMap<>();
+            map.put("vertify",localUser);
+
+            out.writeObject(map);
             out.flush();
 
 System.out.println("read");
 
             socket.shutdownOutput();
 
-//Thread.sleep(100);
-
             in = new ObjectInputStream(socket.getInputStream());
-//System.out.println(in == null);
             remoteUserInfo = (User) in.readObject();
 
-//System.out.println(remoteUserInfo == null);
-//System.out.println(remoteUserInfo.getUsername());
-//System.out.println(remoteUserInfo.getBornDate());
+            socket.close();
         } catch (IOException e) {
             Alert alert = new Alert("网络异常!无法连接到服务器");
             alert.showAlert();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-//        catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        return loginAuthDAO.verifyUser(username,password);
         return remoteUserInfo;
-    }
-
-    public static void main(String[] args){
-        LoginAuth loginAuth = new LoginAuth();
-        System.out.println(loginAuth.verify("10000","12345"));
     }
 }

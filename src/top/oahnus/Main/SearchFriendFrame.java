@@ -1,7 +1,6 @@
 package top.oahnus.Main;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack;
-import com.sun.xml.internal.bind.v2.runtime.output.SAXOutput;
+import top.oahnus.Bean.User;
 import top.oahnus.Util.ProvAndCityFromJSON;
 
 import javax.imageio.ImageIO;
@@ -10,6 +9,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by oahnus on 2016/7/27.
@@ -20,6 +24,7 @@ import java.io.IOException;
  */
 public class SearchFriendFrame extends JFrame {
 
+    public static final String SERVERIP = "127.0.0.1";
     /**
      * 控件定义
      */
@@ -43,6 +48,7 @@ public class SearchFriendFrame extends JFrame {
     private JPanel conditionPanel;
     //结果Panel
     private JPanel resultPanel;
+    private JScrollPane jScrollPane;
     //提示标签
     private JLabel label1,label2,label3,label4;
     //字体
@@ -50,9 +56,14 @@ public class SearchFriendFrame extends JFrame {
 
     //工具类,从JSON文件中读取省市信息
     private ProvAndCityFromJSON provAndCityFromJSON;
+    //用于与服务器通信，获取好友查询结果
+    private Socket socket;
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
+    private User selfAccount;
 
-
-    public SearchFriendFrame(){
+    public SearchFriendFrame(User user){
+        this.selfAccount = user;
         font = new Font("Microsoft YaHei",Font.PLAIN,14);
 
         label1 = new JLabel("按账号:");
@@ -61,6 +72,7 @@ public class SearchFriendFrame extends JFrame {
         label4 = new JLabel("性别:");
         conditionPanel = new JPanel();
         resultPanel = new JPanel();
+        jScrollPane = new JScrollPane(resultPanel);
 
         searchButton = new JButton();
         userIDField = new JTextField(20);
@@ -104,14 +116,18 @@ public class SearchFriendFrame extends JFrame {
         /**
          * 控件设置
          */
-        conditionPanel.setBackground(new Color(230, 126, 34));
+        conditionPanel.setBackground(new Color(46, 204, 113));
         conditionPanel.setBounds(0,0,600,100);
         conditionPanel.setLayout(null);
 
-        resultPanel.setBackground(new Color(236, 240, 241));
+//        resultPanel.setBackground(new Color(46, 204, 113));
+        resultPanel.setBackground(Color.LIGHT_GRAY);
         resultPanel.setBounds(0,100,600,400);
         resultPanel.setLayout(null);
-
+//        resultPanel.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
+        jScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane.setBounds(0,100,600,400);
+        jScrollPane.setAutoscrolls(true);
         /**
          * 账号，昵称条件
          */
@@ -162,7 +178,7 @@ public class SearchFriendFrame extends JFrame {
          * 添加控件到窗体
          */
         getContentPane().add(conditionPanel);
-        getContentPane().add(resultPanel);
+        getContentPane().add(jScrollPane);
 
         setVisible(true);
 
@@ -173,6 +189,7 @@ public class SearchFriendFrame extends JFrame {
         for(int i=0;i<provs.length;i++){
             provComboBox.addItem(provs[i]);
         }
+
     }
 
     /**
@@ -203,17 +220,61 @@ public class SearchFriendFrame extends JFrame {
                         cityComboBox.addItem(city[i]);
                     }
                 }
+                resultPanel.removeAll();
+                resultPanel.repaint();
             }
         });
 
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(userIDField.getText());
-                System.out.println(usernameField.getText());
-                System.out.println(provComboBox.getSelectedItem());
-                System.out.println(cityComboBox.getSelectedItem());
-                System.out.println(sexComboBox.getSelectedItem());
+                try {
+                    socket = new Socket(SERVERIP,8887);
+                    ois = new ObjectInputStream(socket.getInputStream());
+                    oos = new ObjectOutputStream(socket.getOutputStream());
+
+                    //保存查找条件
+                    User user = new User();
+                    user.setUserID(userIDField.getText());
+                    user.setUsername(usernameField.getText());
+                    user.setAddress(provComboBox.getSelectedItem().toString()+cityComboBox.getSelectedItem().toString());
+                    user.setSex(sexComboBox.getSelectedItem().toString());
+
+                    Map<String,User> map = new HashMap<String, User>();
+                    map.put("findFriend",user);
+
+                    oos.writeObject(map);
+                    oos.flush();
+
+                    java.util.List<User> retUsers = new ArrayList<User>();
+                    retUsers = (List<User>) ois.readObject();
+
+//                    resultPanel = new JPanel();
+                    resultPanel.setBackground(Color.LIGHT_GRAY);
+
+                    if(retUsers != null){
+                        System.out.println("找到"+retUsers.size()+"用户");
+                        //计数
+                        int num = 0;
+
+                        for(int i=0;i<retUsers.size();i++){
+                            String userID = retUsers.get(i).getUserID();
+                            if(!selfAccount.getUserID().equals(userID)) {
+                                UserPanel panel = new UserPanel(selfAccount,retUsers.get(i));
+                                resultPanel.add(panel);
+                                panel.setBounds(0, 50 * num, 600, 50);
+                                panel.setting(icon);
+                                num++;
+                            }
+                        }
+                    }else{
+
+                    }
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                } catch (ClassNotFoundException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
     }
@@ -233,7 +294,7 @@ public class SearchFriendFrame extends JFrame {
     /**
      * 测试
      */
-    public static void main(String[] args){
-        new SearchFriendFrame().LaunchFrame();
-    }
+//    public static void main(String[] args){
+//        new SearchFriendFrame().LaunchFrame();
+//    }
 }

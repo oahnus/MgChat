@@ -248,7 +248,7 @@ public class MainFrame extends JFrame{
         addItem.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                SearchFriendFrame searchFriendFrame = new SearchFriendFrame();
+                SearchFriendFrame searchFriendFrame = new SearchFriendFrame(user);
                 searchFriendFrame.LaunchFrame();
             }
 

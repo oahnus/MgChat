@@ -2,6 +2,7 @@ package top.oahnus.LoginIn;
 
 import top.oahnus.Bean.User;
 import top.oahnus.ConnectToServer.FriendsStateMonitor;
+import top.oahnus.Extra.Alert;
 import top.oahnus.Main.MainFrame;
 
 import javax.imageio.ImageIO;
@@ -70,27 +71,15 @@ public class LoginFrame extends JFrame {
                 //使用user传送数据可能有局限性？
                 //TODO
                 if(user!=null){
-                    System.out.println("success");
-
-//                    //在链接成功后发送本机ip并存入server
-//                    try {
-//                        Socket socket = new Socket("127.0.0.1",8889);
-//                        DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-//                        dos.writeUTF("PUTIP#"+user.getUserID()+"#"+ InetAddress.getLocalHost().getHostAddress());
-//                        dos.flush();
-//
-//                        dos.close();
-//                        socket.close();
-//                    } catch (IOException e1) {
-//                        e1.printStackTrace();
-//System.out.println("发送ip数据时出错");
-//                    }
+System.out.println("success");
 
                     MainFrame mainFrame = new MainFrame(user);
                     mainFrame.launch();
                     close();
                 }else{
-                    System.out.println("error");
+System.out.println("error");
+                    Alert alert = new Alert("用户名或密码错误!!!");
+                    alert.showAlert();
                 }
             }
         });
