@@ -39,13 +39,4 @@ public class MD5Util {
         }
         return hexString.toString();
     }
-
-    public static void main(String[] args){
-        String input = "222222";
-
-        String ret = MD5Util.encode2hex(input);
-
-        System.out.println(ret);
-
-    }
 }

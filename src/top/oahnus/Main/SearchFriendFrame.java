@@ -24,7 +24,9 @@ import java.util.List;
  */
 public class SearchFriendFrame extends JFrame {
 
-    public static final String SERVERIP = "127.0.0.1";
+//    public static final String SERVERIP = "127.0.0.1";
+    public static final String SERVERIP = "139.129.49.14";
+
     /**
      * 控件定义
      */
@@ -220,6 +222,22 @@ public class SearchFriendFrame extends JFrame {
                         cityComboBox.addItem(city[i]);
                     }
                 }
+                resultPanel.removeAll();
+                resultPanel.repaint();
+            }
+        });
+
+        cityComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                resultPanel.removeAll();
+                resultPanel.repaint();
+            }
+        });
+
+        sexComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
                 resultPanel.removeAll();
                 resultPanel.repaint();
             }

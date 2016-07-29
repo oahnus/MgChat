@@ -23,8 +23,8 @@ import java.io.IOException;
 //登录界面主窗体
 public class LoginFrame extends JFrame {
 
-    private final String REGISTERURL = "http://127.0.0.1:12306/MgChatServer/servlet/registerServlet";
-    private final String FORGETURL   = "http://127.0.0.1:12306";
+    private final String REGISTERURL = "http://139.129.49.14/mgchat/register.html";
+    private final String FORGETURL   = "http://139.129.49.14";
 
     //用户账号输入框
     private JTextField userIDField;
@@ -107,8 +107,7 @@ System.out.println("error");
                         desktop.browse(uri);
                     } catch (IOException e1) {
                         //无法获取浏览器对象
-                        //e1.printStackTrace();
-                        //TODO 添加提示
+                        e1.printStackTrace();
                     }
                 }
             }

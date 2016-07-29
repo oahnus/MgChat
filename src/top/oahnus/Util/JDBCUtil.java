@@ -60,14 +60,4 @@ public class JDBCUtil {
             conn = null;
         }
     }
-
-    public static void main(String[] args){
-        String url = properties.getProperty("url");
-        String user = properties.getProperty("user");
-        String pass = properties.getProperty("password");
-
-        System.out.println(url);
-        System.out.println(user);
-        System.out.println(pass);
-    }
 }

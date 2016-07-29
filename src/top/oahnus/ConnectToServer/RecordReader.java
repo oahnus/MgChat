@@ -19,7 +19,9 @@ import java.util.List;
  * 读取离线消息，传送查找好友指令
  */
 public class RecordReader implements Runnable{
-    public static final String SERVERIP = "127.0.0.1";
+//    public static final String SERVERIP = "127.0.0.1";
+    public static final String SERVERIP = "139.129.49.14";
+
     private Socket socket;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;

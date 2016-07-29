@@ -17,7 +17,8 @@ import java.util.Date;
  */
 public class ChatRoomFrame extends JFrame implements Runnable{
 
-    private final String SERVERIP = "127.0.0.1";
+//    private final String SERVERIP = "127.0.0.1";
+    private final String SERVERIP = "139.129.49.14";
 
     //显示文本信息
     private JTextArea messageArea = new JTextArea();

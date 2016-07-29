@@ -176,7 +176,7 @@ public class MainFrame extends JFrame{
         closeIcon  = ImageIO.read(new File("resource/icon/close.png"));
         background = ImageIO.read(new File("resource/icon/background.jpg"));
         icon       = ImageIO.read(new File("resource/icon/icon.jpg"));
-        userIcon   = ImageIO.read(new File(user.getFigure()));
+        userIcon   = ImageIO.read(new File(user.getFigure().substring(4)));
 
         Image add,menu,setting;
         add = ImageIO.read(new File("resource/icon/search.png"));
