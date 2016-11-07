@@ -18,8 +18,8 @@ import java.util.Map;
 // 通过Socket与服务端链接，将输入的用户信息封装到User中，发送到服务端验证，
 // 若成功，返回从数据库中获取的User信息
 public class LoginAuth {
-//    public static final String SERVERIP = "127.0.0.1";
-    public static final String SERVERIP = "139.129.49.14";
+    public static final String SERVER_IP = "127.0.0.1";
+//    public static final String SERVER_IP = "139.129.49.14";
 
     //链接服务端
     private Socket socket = null;
@@ -46,11 +46,11 @@ public class LoginAuth {
         localUser.setPassword(password);
 
         try {
-            socket = new Socket(SERVERIP,8887);
+            socket = new Socket(SERVER_IP,7887);
             out = new ObjectOutputStream(socket.getOutputStream());
 
             Map<String,User> map = new HashMap<>();
-            map.put("vertify",localUser);
+            map.put("verify",localUser);
 
             out.writeObject(map);
             out.flush();

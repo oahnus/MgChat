@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class FriendsStateMonitor{
     private Socket socket                = null;
-    private ObjectOutputStream oos         = null;
+    private ObjectOutputStream oos       = null;
     private ObjectInputStream ois        = null;
 
     private List<User> friends           = null;
@@ -41,7 +41,7 @@ public class FriendsStateMonitor{
      */
     public void connectToServer(){
         try {
-            socket      = new Socket("127.0.0.1",8888);
+            socket      = new Socket("127.0.0.1",7888);
             oos         = new ObjectOutputStream(socket.getOutputStream());
             ois         = new ObjectInputStream(socket.getInputStream());
             ipAddress   = InetAddress.getLocalHost().getHostAddress();
@@ -53,7 +53,7 @@ public class FriendsStateMonitor{
             oos.flush();
 System.out.println("LOGIN");
         }catch(BindException e){
-System.out.println("8888端口被占用");
+System.out.println("7888端口被占用");
         }
         catch (IOException e) {
             e.printStackTrace();

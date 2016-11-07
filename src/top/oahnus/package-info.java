@@ -11,7 +11,4 @@ package top.oahnus;
  通过Socket将User序列化返回给客户端
 
  好友查询显示，同样发送请求道服务器端，服务器端将好友列表封装在list中通过socket返回
-
-
-
  **/

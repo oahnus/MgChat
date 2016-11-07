@@ -1,7 +1,7 @@
 package top.oahnus.Main;
 
 import top.oahnus.Bean.User;
-import top.oahnus.Util.ProvAndCityFromJSON;
+import top.oahnus.Util.ProvinceAndCityFromJSONReader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Created by oahnus on 2016/7/27.
+ * Created on 2016/7/27.
  */
 
 /**
@@ -24,8 +24,8 @@ import java.util.List;
  */
 public class SearchFriendFrame extends JFrame {
 
-//    public static final String SERVERIP = "127.0.0.1";
-    public static final String SERVERIP = "139.129.49.14";
+    private static final String SERVER_IP = "127.0.0.1";
+//    public static final String SERVER_IP = "139.129.49.14";
 
     /**
      * 控件定义
@@ -36,7 +36,7 @@ public class SearchFriendFrame extends JFrame {
     private SearchFriendFrame self = this;
     //程序图标
     private Image icon;
-    //serach图标
+    //search图标
     private Image searchIcon;
     //省市下拉框
     private JComboBox provComboBox;
@@ -57,7 +57,7 @@ public class SearchFriendFrame extends JFrame {
     private Font font;
 
     //工具类,从JSON文件中读取省市信息
-    private ProvAndCityFromJSON provAndCityFromJSON;
+    private ProvinceAndCityFromJSONReader provinceAndCityFromJSONReader;
     //用于与服务器通信，获取好友查询结果
     private Socket socket;
     private ObjectInputStream ois;
@@ -86,8 +86,8 @@ public class SearchFriendFrame extends JFrame {
         /**
          * 加载JSON文件，读取省市信息添加到ComboBox中
          */
-        provAndCityFromJSON = new ProvAndCityFromJSON();
-        provAndCityFromJSON.loadJSONFile();
+        provinceAndCityFromJSONReader = new ProvinceAndCityFromJSONReader();
+        provinceAndCityFromJSONReader.loadJSONFile();
     }
 
     /**
@@ -187,9 +187,9 @@ public class SearchFriendFrame extends JFrame {
         /**
          * 从文件加载省份信息
          */
-        String[] provs = provAndCityFromJSON.getProvs();
-        for(int i=0;i<provs.length;i++){
-            provComboBox.addItem(provs[i]);
+        String[] provinces = provinceAndCityFromJSONReader.getProvinces();
+        for(int i=0;i<provinces.length;i++){
+            provComboBox.addItem(provinces[i]);
         }
 
     }
@@ -217,7 +217,7 @@ public class SearchFriendFrame extends JFrame {
                     cityComboBox.addItem("不限");
                 }else{
                     cityComboBox.removeAllItems();
-                    String[] city = provAndCityFromJSON.getCitys(selectedProv);
+                    String[] city = provinceAndCityFromJSONReader.getCities(selectedProv);
                     for(int i=0;i<city.length;i++){
                         cityComboBox.addItem(city[i]);
                     }
@@ -247,7 +247,7 @@ public class SearchFriendFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    socket = new Socket(SERVERIP,8887);
+                    socket = new Socket(SERVER_IP,7887);
                     ois = new ObjectInputStream(socket.getInputStream());
                     oos = new ObjectOutputStream(socket.getOutputStream());
 

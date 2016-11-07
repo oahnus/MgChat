@@ -3,7 +3,6 @@ package top.oahnus.ConnectToServer;
 import top.oahnus.Bean.Message;
 import top.oahnus.Main.MemberPanel;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,8 +18,8 @@ import java.util.List;
  * 读取离线消息，传送查找好友指令
  */
 public class RecordReader implements Runnable{
-//    public static final String SERVERIP = "127.0.0.1";
-    public static final String SERVERIP = "139.129.49.14";
+    public static final String SERVER_IP = "127.0.0.1";
+//    public static final String SERVER_IP = "139.129.49.14";
 
     private Socket socket;
     private ObjectInputStream ois;
@@ -37,7 +36,7 @@ public class RecordReader implements Runnable{
     public void run() {
         try{
 System.out.println("查询是否有离线链接");
-            socket = new Socket(SERVERIP,8885);
+            socket = new Socket(SERVER_IP,7885);
             ois = new ObjectInputStream(socket.getInputStream());
             oos = new ObjectOutputStream(socket.getOutputStream());
 

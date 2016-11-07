@@ -1,7 +1,6 @@
 package top.oahnus.LoginIn;
 
 import top.oahnus.Bean.User;
-import top.oahnus.ConnectToServer.FriendsStateMonitor;
 import top.oahnus.Extra.Alert;
 import top.oahnus.Main.MainFrame;
 
@@ -9,9 +8,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.DataOutputStream;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.net.URI;
 import java.io.File;
 import java.io.IOException;
@@ -23,8 +19,8 @@ import java.io.IOException;
 //登录界面主窗体
 public class LoginFrame extends JFrame {
 
-    private final String REGISTERURL = "http://139.129.49.14/mgchat/register.html";
-    private final String FORGETURL   = "http://139.129.49.14";
+    private final String REGISTER_URL = "http://139.129.49.14/mgchat/register.html";
+    private final String FORGET_URL = "http://139.129.49.14";
 
     //用户账号输入框
     private JTextField userIDField;
@@ -98,7 +94,7 @@ System.out.println("error");
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                URI uri = URI.create(REGISTERURL);
+                URI uri = URI.create(REGISTER_URL);
 
                 Desktop desktop = Desktop.getDesktop();
 
@@ -116,7 +112,7 @@ System.out.println("error");
         forgetLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                URI uri = URI.create(FORGETURL);
+                URI uri = URI.create(FORGET_URL);
 
                 Desktop desktop = Desktop.getDesktop();
 

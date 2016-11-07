@@ -1,8 +1,6 @@
 package top.oahnus.Main;
 
 import top.oahnus.Bean.User;
-import top.oahnus.ConnectToServer.FriendsStateMonitor;
-import top.oahnus.ConnectToServer.RecordReader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -11,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.*;
 import java.util.List;
 
@@ -20,7 +17,7 @@ import java.util.List;
  */
 public class FriendsPanel extends JPanel {
 
-    public static final int FIGUREICONWIDTH = 20;
+    public static final int FIGURE_ICON_WIDTH = 20;
     private User user                       = null;
     private Image image                     = null;
     //默认头像
@@ -133,9 +130,9 @@ System.out.println("无法获取图片资源");
         Image tabUp,tabDown;
 
         tabUp = ImageIO.read(new File("resource/icon/tab_up.png"));
-        tabUp = tabUp.getScaledInstance(FIGUREICONWIDTH,FIGUREICONWIDTH,Image.SCALE_DEFAULT);
+        tabUp = tabUp.getScaledInstance(FIGURE_ICON_WIDTH, FIGURE_ICON_WIDTH,Image.SCALE_DEFAULT);
         tabDown = ImageIO.read(new File("resource/icon/tab_down.png"));
-        tabDown = tabDown.getScaledInstance(FIGUREICONWIDTH,FIGUREICONWIDTH,Image.SCALE_DEFAULT);
+        tabDown = tabDown.getScaledInstance(FIGURE_ICON_WIDTH, FIGURE_ICON_WIDTH,Image.SCALE_DEFAULT);
 
         tabUpIcon = new ImageIcon(tabUp);
         tabDownIcon = new ImageIcon(tabDown);

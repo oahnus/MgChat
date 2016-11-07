@@ -10,15 +10,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.Socket;
-import java.util.Date;
 
 /**
  * Created by oahnus on 2016/7/12.
  */
 public class ChatRoomFrame extends JFrame implements Runnable{
 
-//    private final String SERVERIP = "127.0.0.1";
-    private final String SERVERIP = "139.129.49.14";
+    private final String SERVER_IP = "127.0.0.1";
+//    private final String SERVER_IP = "139.129.49.14";
 
     //显示文本信息
     private JTextArea messageArea = new JTextArea();
@@ -59,11 +58,11 @@ public class ChatRoomFrame extends JFrame implements Runnable{
     private int mouseX            = 0;
     private int mouseY            = 0;
     private boolean isCanMoved    = false;
-    private boolean isRunning         = false;
+    private boolean isRunning     = false;
     private String ip = "";
 
-    public static final int WINDOWWIDTH  = 600;
-    public static final int WINDOWHEIGHT = 520;
+    public static final int WINDOW_WIDTH = 600;
+    public static final int WINDOW_HEIGHT = 520;
 
     private User friend;
     private User user;
@@ -87,7 +86,7 @@ public class ChatRoomFrame extends JFrame implements Runnable{
     //设置
     private void setting(){
         setLayout(null);
-        setSize(WINDOWWIDTH,WINDOWHEIGHT);
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 //        setResizable(false);
         setLocation(300,100);
         setUndecorated(true);
@@ -99,26 +98,26 @@ public class ChatRoomFrame extends JFrame implements Runnable{
         }
         settingTitlePanel();
 
-        titlePanel.setBounds(0,0,WINDOWWIDTH,65);
+        titlePanel.setBounds(0,0, WINDOW_WIDTH,65);
         titlePanel.setBackground(Color.BLUE);
 
-        messageArea.setBounds(0,0,WINDOWWIDTH,290);
+        messageArea.setBounds(0,0, WINDOW_WIDTH,290);
         messageArea.setLineWrap(true);
         messageArea.setEditable(false);
         messageArea.setFont(font);
 
-        inputArea.setBounds(0,400,WINDOWWIDTH,90);
+        inputArea.setBounds(0,400, WINDOW_WIDTH,90);
         inputArea.setLineWrap(true);
         inputArea.setFont(font);
         inputArea.setFocusable(true);
 
-        closeButton.setBounds(WINDOWWIDTH-140,490,65,25);
-        sendButton.setBounds(WINDOWWIDTH-70,490,65,25);
+        closeButton.setBounds(WINDOW_WIDTH -140,490,65,25);
+        sendButton.setBounds(WINDOW_WIDTH -70,490,65,25);
 
         //消息框滚动条
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setAutoscrolls(true);
-        scrollPane.setBounds(0,90,WINDOWWIDTH,290);
+        scrollPane.setBounds(0,90, WINDOW_WIDTH,290);
 
         getContentPane().add(titlePanel);
         getContentPane().add(scrollPane);
@@ -137,10 +136,10 @@ public class ChatRoomFrame extends JFrame implements Runnable{
         min.setIcon(new ImageIcon(minIcon));
         close.setIcon(new ImageIcon(closeIcon));
 
-        close.setBounds(WINDOWWIDTH-20,0,20,20);
-        max.setBounds(WINDOWWIDTH-40,0,20,20);
+        close.setBounds(WINDOW_WIDTH -20,0,20,20);
+        max.setBounds(WINDOW_WIDTH -40,0,20,20);
         max.setOpaque(false);
-        min.setBounds(WINDOWWIDTH-60,0,20,20);
+        min.setBounds(WINDOW_WIDTH -60,0,20,20);
         min.setOpaque(false);
 
         figureImage.setBounds(10,5,50,50);
@@ -255,7 +254,7 @@ System.out.println("发送关闭");
                  * 还原窗体
                  */
                 else{
-                    self.setSize(WINDOWWIDTH,WINDOWHEIGHT);
+                    self.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
                     max.setIcon(new ImageIcon(maxIcon));
                     setLocation(300,100);
 
@@ -334,7 +333,7 @@ System.out.println("##消息发送失败");
      */
     public void connectToServer(){
         try {
-            socket=new Socket(SERVERIP,8888);
+            socket=new Socket(SERVER_IP,7888);
 
             oos=new ObjectOutputStream(socket.getOutputStream());
             ois=new ObjectInputStream(socket.getInputStream());

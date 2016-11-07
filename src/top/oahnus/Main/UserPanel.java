@@ -15,7 +15,7 @@ import java.util.HashMap;
  * Created by oahnus on 2016/7/28.
  */
 public class UserPanel extends JPanel{
-//    public static final String SERVERIP = "127.0.0.1";
+//    public static final String SERVER_IP = "127.0.0.1";
     public static final String SERVERIP = "139.129.49.14";
 
     private JLabel figure;
@@ -57,7 +57,7 @@ public class UserPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Socket socket = new Socket(SERVERIP,8887);
+                    Socket socket = new Socket(SERVERIP,7887);
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 
                     HashMap<String,String> map = new HashMap<String, String>();

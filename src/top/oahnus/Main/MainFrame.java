@@ -1,6 +1,5 @@
 package top.oahnus.Main;
 
-import javafx.scene.text.*;
 import top.oahnus.Bean.User;
 import top.oahnus.ConnectToServer.RecordReader;
 
@@ -56,8 +55,8 @@ public class MainFrame extends JFrame{
     private RecordReader recordReader;
     private Thread recordReaderThread;
 
-    public static final int WINDOWWIDTH  = 280;
-    public static final int WINDOWHEIGHT = 640;
+    public static final int WINDOW_WIDTH = 280;
+    public static final int WINDOW_HEIGHT = 640;
 
     Image minIcon,closeIcon,userIcon,background,icon;
     private ImageIcon menuIcon,addIcon,settingIcon;
@@ -98,22 +97,22 @@ public class MainFrame extends JFrame{
         }
 
         //设置窗体尺寸，位置
-        setBounds(1000, 10, WINDOWWIDTH,WINDOWHEIGHT);
+        setBounds(1000, 10, WINDOW_WIDTH, WINDOW_HEIGHT);
         //设置边框
         getRootPane().setBorder(new LineBorder(Color.gray));
 
         //控件尺寸位置
-        close.setBounds(WINDOWWIDTH-20,0,20,20);
-        min.setBounds(WINDOWWIDTH-40,0,20,20);
-        back.setBounds(0,0,WINDOWWIDTH,160);
+        close.setBounds(WINDOW_WIDTH -20,0,20,20);
+        min.setBounds(WINDOW_WIDTH -40,0,20,20);
+        back.setBounds(0,0, WINDOW_WIDTH,160);
 
         //底部菜单栏
-        menuItem.setBounds(20,WINDOWHEIGHT-20,80,20);
-        addItem.setBounds(100,WINDOWHEIGHT-20,80,20);
-        settingItem.setBounds(180,WINDOWHEIGHT-20,80,20);
+        menuItem.setBounds(20, WINDOW_HEIGHT -20,80,20);
+        addItem.setBounds(100, WINDOW_HEIGHT -20,80,20);
+        settingItem.setBounds(180, WINDOW_HEIGHT -20,80,20);
 
         //用户信息panel设置
-        userInfoPanel.setBounds(0,30,WINDOWWIDTH,140);
+        userInfoPanel.setBounds(0,30, WINDOW_WIDTH,140);
         userInfoPanel.setLayout(null);
 
         //用户信息面板设置
@@ -145,9 +144,9 @@ public class MainFrame extends JFrame{
 
         //滚动条设置
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setBounds(0,180,WINDOWWIDTH,WINDOWHEIGHT-200);
+        scrollPane.setBounds(0,180, WINDOW_WIDTH, WINDOW_HEIGHT -200);
         scrollPane.setAutoscrolls(true);
-        scrollPane.setPreferredSize(new Dimension(WINDOWWIDTH,WINDOWHEIGHT-200));
+        scrollPane.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT -200));
 
         //添加控件到面板
         getContentPane().add(close);
